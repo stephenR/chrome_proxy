@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html data-ng-app="chromeProxyApp" ng-csp="">
+<head>
+  <meta charset="utf-8" />
+  <title>Chrome Proxy</title>
+  <link rel="stylesheet" media="all" href="css/bootstrap.css">
+  <link rel="stylesheet" media="all" href="css/main.css">
+  <base target="_blank">
+</head>
+<body data-ng-controller="ProxyController">
+
+<section id="main">
+  <nav>
+    <h2>Chrome Proxy</h2>
+    <button class="btn" data-ng-click="fetchDevices()">Refresh</button>
+    <button class="btn" id="close-button" title="Close">x</button>
+  </nav>
+
+  <progress id='progress-bar'></progress>
+  <ul>
+    <li data-ng-repeat="rule in rules">
+      {{rule.listen_ip}}:{{rule.listen_port}} => {{rule.remote_addr}}:{{rule.remote_port}}
+      <button style="float: right;" data-ng-click="deleteRule()">delete</button>
+      <button style="float: right;" data-ng-click="reconnectRule()">reconnect</button>
+    </li>
+  </ul>
+  <form>
+    <input type="text" ng-model="rule.listen_ip" placeholder="Listen IP"/>
+    <input type="number" ng-model="rule.listen_port" placeholder="Listen port" min="1024" max="65535"/>
+    <input type="text" ng-model="rule.remote_addr" placeholder="Remote Address"/>
+    <input type="number" ng-model="rule.remote_port" placeholder="Remote port" min="1" max="65535"/>
+    <input type="submit" ng-click="createRule(rule)" value="Create" />
+  </form>
+</section>
+
+<script src="js/angular.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

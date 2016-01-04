@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "ChromeProxy",
+  "short_name": "ChromeProxy",
+  "description": "",
+  "version": "0.0.1",
+  "minimum_chrome_version": "38",
+
+  "app": {
+    "background": {
+      "scripts": ["js/background.js"]
+    }
+  },
+
+  "permissions": [],
+  
+  "sockets": {
+    "tcpServer": { "listen": "" },
+    "tcp": {"connect": "" }
+  }
+}
