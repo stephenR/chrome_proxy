@@ -64,9 +64,13 @@ chromeProxyApp.controller('ProxyController', function ($scope) {
   };
   
   $scope.reconnectRule = function() {
-    tcpServer.close(this.rule.listen_socketId, () => {
+    if (this.rule.listen_socketId !== undefined) {
+      tcpServer.close(this.rule.listen_socketId, () => {
+        tcpServer.create(callback=server_create_callback.bind(undefined, this.rule));
+      });
+    } else {
       tcpServer.create(callback=server_create_callback.bind(undefined, this.rule));
-    });
+    }
   };
   
   $scope.deleteRule = function() {
@@ -76,16 +80,23 @@ chromeProxyApp.controller('ProxyController', function ($scope) {
     }
   };
   
+  $scope.saveRules = function() {
+    chrome.storage.local.set({'rules': $scope.rules}, function() {
+      console.log('Rules saved.');
+    });
+  };
+  
   tcp.onReceive.addListener(onreceive_callback);
   
   $scope.rules = [];
-  var default_rule = {
-      "listen_ip": "0.0.0.0",
-      "listen_port": 1337,
-      "remote_addr": "localhost",
-      "remote_port": 8889
-    };
-  $scope.createRule(default_rule);
+  
+  chrome.storage.local.get('rules', items => {
+    items.rules.forEach(rule => {
+      delete rule.listen_socketId;
+      $scope.rules.push(rule);
+    });
+    $scope.$apply();
+  });
 });
 
 document.addEventListener('DOMContentLoaded', function(e) {

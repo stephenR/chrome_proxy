@@ -12,7 +12,7 @@
     }
   },
 
-  "permissions": [],
+  "permissions": [ "storage" ],
   
   "sockets": {
     "tcpServer": { "listen": "" },
